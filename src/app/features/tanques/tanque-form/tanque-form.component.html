@@ -1,0 +1,59 @@
+<div class="container">
+    <h1>{{ isEditMode ? 'Editar' : 'Novo' }} Tanque</h1>
+  
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Carregando dados...</p>
+    </div>
+  
+    <div *ngIf="error" class="error-container">
+      <p>{{ error }}</p>
+      <button *ngIf="isEditMode" class="btn-secondary" (click)="carregarTanque(tanqueId)">Tentar novamente</button>
+    </div>
+  
+    <form [formGroup]="tanqueForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+      <div class="form-group">
+        <label for="nome">Nome do Tanque*</label>
+        <input type="text" id="nome" formControlName="nome" class="form-control" [class.is-invalid]="tanqueForm.get('nome')?.invalid && tanqueForm.get('nome')?.touched">
+        <div *ngIf="tanqueForm.get('nome')?.invalid && tanqueForm.get('nome')?.touched" class="error-message">
+          <span *ngIf="tanqueForm.get('nome')?.errors?.['required']">Nome do tanque é obrigatório.</span>
+          <span *ngIf="tanqueForm.get('nome')?.errors?.['maxlength']">Nome deve ter no máximo 255 caracteres.</span>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="capacidade">Capacidade (m³)*</label>
+        <input type="number" id="capacidade" formControlName="capacidade" class="form-control" min="0" step="0.01" [class.is-invalid]="tanqueForm.get('capacidade')?.invalid && tanqueForm.get('capacidade')?.touched">
+        <div *ngIf="tanqueForm.get('capacidade')?.invalid && tanqueForm.get('capacidade')?.touched" class="error-message">
+          <span *ngIf="tanqueForm.get('capacidade')?.errors?.['required']">Capacidade é obrigatória.</span>
+          <span *ngIf="tanqueForm.get('capacidade')?.errors?.['min']">Capacidade deve ser um valor positivo.</span>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="localizacao">Localização*</label>
+        <input type="text" id="localizacao" formControlName="localizacao" class="form-control" [class.is-invalid]="tanqueForm.get('localizacao')?.invalid && tanqueForm.get('localizacao')?.touched">
+        <div *ngIf="tanqueForm.get('localizacao')?.invalid && tanqueForm.get('localizacao')?.touched" class="error-message">
+          <span *ngIf="tanqueForm.get('localizacao')?.errors?.['required']">Localização é obrigatória.</span>
+          <span *ngIf="tanqueForm.get('localizacao')?.errors?.['maxlength']">Localização deve ter no máximo 255 caracteres.</span>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="especieCultura">Espécie Cultivada*</label>
+        <input type="text" id="especieCultura" formControlName="especieCultura" class="form-control" [class.is-invalid]="tanqueForm.get('especieCultura')?.invalid && tanqueForm.get('especieCultura')?.touched">
+        <div *ngIf="tanqueForm.get('especieCultura')?.invalid && tanqueForm.get('especieCultura')?.touched" class="error-message">
+          <span *ngIf="tanqueForm.get('especieCultura')?.errors?.['required']">Espécie cultivada é obrigatória.</span>
+          <span *ngIf="tanqueForm.get('especieCultura')?.errors?.['maxlength']">Espécie cultivada deve ter no máximo 255 caracteres.</span>
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+        <button type="submit" class="btn-primary" [disabled]="submitting">
+          <span *ngIf="submitting" class="spinner-sm"></span>
+          {{ isEditMode ? 'Atualizar' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>

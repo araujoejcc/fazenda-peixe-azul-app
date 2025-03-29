@@ -1,0 +1,132 @@
+<div class="container">
+    <div class="header-actions">
+      <button class="btn-text" (click)="voltarParaLista()">
+        <span class="material-icons">arrow_back</span>
+        Voltar para lista
+      </button>
+      <button class="btn-primary" (click)="editarTanque()" *ngIf="tanque">
+        <span class="material-icons">edit</span>
+        Editar Tanque
+      </button>
+    </div>
+  
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Carregando informações...</p>
+    </div>
+  
+    <div *ngIf="error" class="error-container">
+      <p>{{ error }}</p>
+      <button class="btn-secondary" (click)="carregarDados()">Tentar novamente</button>
+    </div>
+  
+    <div *ngIf="tanque && !loading" class="detail-content">
+      <div class="card">
+        <h2>Informações do Tanque</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Nome:</span>
+            <span class="value">{{ tanque.nome }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Espécie Cultivada:</span>
+            <span class="value">{{ tanque.especieCultura }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Capacidade:</span>
+            <span class="value">{{ tanque.capacidade }} m³</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Localização:</span>
+            <span class="value">{{ tanque.localizacao }}</span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="card">
+        <div class="section-header">
+          <h2>Ciclos de Produção</h2>
+          <button class="btn-primary" (click)="novoCiclo()">
+            <span class="material-icons">add</span>
+            Novo Ciclo
+          </button>
+        </div>
+  
+        <div *ngIf="ciclos.length === 0" class="empty-state">
+          <p>Nenhum ciclo de produção registrado para este tanque.</p>
+          <button class="btn-secondary" (click)="novoCiclo()">Registrar primeiro ciclo</button>
+        </div>
+  
+        <table *ngIf="ciclos.length > 0" class="data-table">
+          <thead>
+            <tr>
+              <th>Início</th>
+              <th>Fim</th>
+              <th>Produção (kg)</th>
+              <th>Ração (kg)</th>
+              <th>FCA</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ciclo of ciclos">
+              <td>{{ ciclo.dataInicio | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ ciclo.dataFim ? (ciclo.dataFim | date: 'dd/MM/yyyy') : 'Em andamento' }}</td>
+              <td>{{ ciclo.quantidadePescado }}</td>
+              <td>{{ ciclo.racaoGasta }}</td>
+              <td>{{ ciclo.quantidadePescado > 0 ? (ciclo.racaoGasta / ciclo.quantidadePescado).toFixed(2) : '-' }}</td>
+              <td class="actions">
+                <button class="btn-icon">
+                  <span class="material-icons">visibility</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="card">
+        <div class="section-header">
+          <h2>Registros de Qualidade da Água</h2>
+          <button class="btn-primary" (click)="novoRegistroQualidade()">
+            <span class="material-icons">add</span>
+            Novo Registro
+          </button>
+        </div>
+  
+        <div *ngIf="registrosQualidade.length === 0" class="empty-state">
+          <p>Nenhum registro de qualidade da água para este tanque.</p>
+          <button class="btn-secondary" (click)="novoRegistroQualidade()">Registrar primeira medição</button>
+        </div>
+  
+        <table *ngIf="registrosQualidade.length > 0" class="data-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>pH</th>
+              <th>Oxigênio (mg/L)</th>
+              <th>Temperatura (°C)</th>
+              <th>Amônia (mg/L)</th>
+              <th>Nitrito (mg/L)</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let registro of registrosQualidade">
+              <td>{{ registro.data | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ registro.ph }}</td>
+              <td>{{ registro.oxigenacao }}</td>
+              <td>{{ registro.temperatura }}</td>
+              <td>{{ registro.amonia }}</td>
+              <td>{{ registro.nitrito }}</td>
+              <td class="actions">
+                <button class="btn-icon">
+                  <span class="material-icons">visibility</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
