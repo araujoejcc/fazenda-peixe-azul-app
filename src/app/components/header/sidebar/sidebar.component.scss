@@ -1,0 +1,44 @@
+.sidebar {
+    width: 250px;
+    height: 100%;
+    background-color: #f5f5f5;
+    border-right: 1px solid #e0e0e0;
+    overflow-y: auto;
+  }
+  
+  .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-item {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .menu-link {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  
+  .menu-link:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .menu-link.active {
+    background-color: #3f51b5;
+    color: white;
+  }
+  
+  .material-icons {
+    margin-right: 0.5rem;
+  }
+  
+  .menu-text {
+    font-size: 0.9rem;
+  }

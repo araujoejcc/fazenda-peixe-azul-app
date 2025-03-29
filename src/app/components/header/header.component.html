@@ -1,0 +1,10 @@
+<header class="header">
+    <div class="logo">
+      <h1>GestãoPeixe</h1>
+    </div>
+    <nav class="nav">
+      <ng-container *ngIf="isLoggedIn$ | async">
+        <button class="logout-btn" (click)="onLogout()">Sair</button>
+      </ng-container>
+    </nav>
+  </header>
