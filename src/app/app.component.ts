@@ -12,7 +12,9 @@ export class AppComponent implements OnInit {
   isLoggedIn$: Observable<boolean>;
 
   constructor(private authService: AuthService) {
+    console.log('AppComponent initialized');
     this.isLoggedIn$ = this.authService.isLoggedIn();
+    console.log('AuthService initialized');
   }
 
   ngOnInit(): void {

@@ -10,7 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SidebarComponent } from './components/header/sidebar/sidebar.component';
 
-// Serviços reais
+// Serviços
 import { AuthService } from './core/services/auth.service';
 import { TanqueService } from './core/services/tanque.service';
 import { CicloProducaoService } from './core/services/ciclo-producao.service';

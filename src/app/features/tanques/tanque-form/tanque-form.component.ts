@@ -28,11 +28,11 @@ export class TanqueFormComponent implements OnInit {
     this.initForm();
     
     // Verifica se estamos em modo de edição
-    this.tanqueId = this.route.snapshot.params['id'];
-    this.isEditMode = !!this.tanqueId;
-    
-    if (this.isEditMode) {
-      this.carregarTanque(this.tanqueId!);
+    const idParam = this.route.snapshot.params['id'];
+    if (idParam) {
+      this.tanqueId = +idParam;
+      this.isEditMode = true;
+      this.carregarTanque(this.tanqueId);
     }
   }
 
@@ -72,19 +72,29 @@ export class TanqueFormComponent implements OnInit {
     this.submitting = true;
     const tanque: Tanque = this.tanqueForm.value;
 
-    const request = this.isEditMode
-      ? this.tanqueService.updateTanque(this.tanqueId!, tanque)
-      : this.tanqueService.createTanque(tanque);
-
-    request.subscribe({
-      next: () => {
-        this.router.navigate(['/tanques']);
-      },
-      error: (err) => {
-        this.error = `Erro ao ${this.isEditMode ? 'atualizar' : 'criar'} tanque: ` + (err.message || 'Erro desconhecido');
-        this.submitting = false;
-      }
-    });
+    if (this.isEditMode && this.tanqueId) {
+      this.tanqueService.updateTanque(this.tanqueId, tanque)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/tanques']);
+          },
+          error: (err) => {
+            this.error = 'Erro ao atualizar tanque: ' + (err.message || 'Erro desconhecido');
+            this.submitting = false;
+          }
+        });
+    } else {
+      this.tanqueService.createTanque(tanque)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/tanques']);
+          },
+          error: (err) => {
+            this.error = 'Erro ao criar tanque: ' + (err.message || 'Erro desconhecido');
+            this.submitting = false;
+          }
+        });
+    }
   }
 
   cancelar(): void {

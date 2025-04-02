@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { TanqueListComponent } from './tanque-list/tanque-list.component';
+// Corrigindo os caminhos de importação
+import { TanqueListComponent } from './tanques-list/tanque-list.component';
 import { TanqueFormComponent } from './tanque-form/tanque-form.component';
 import { TanqueDetailComponent } from './tanque-detail/tanque-detail.component';
 import { AuthGuard } from '../../core/guards/auth.guard';

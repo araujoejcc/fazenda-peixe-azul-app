@@ -1,59 +1,59 @@
 <div class="container">
-    <div class="header-actions">
-      <h1>Tanques</h1>
-      <button class="btn-primary" (click)="criarTanque()">
-        <span class="material-icons">add</span>
-        Novo Tanque
-      </button>
+  <div class="header-actions">
+    <h1>Tanques</h1>
+    <button class="btn-primary" (click)="criarTanque()">
+      <span class="material-icons">add</span>
+      Novo Tanque
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando tanques...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="carregarTanques()">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div *ngIf="tanques.length === 0" class="empty-state">
+      <p>Nenhum tanque cadastrado</p>
+      <button class="btn-primary" (click)="criarTanque()">Cadastrar primeiro tanque</button>
     </div>
-  
-    <div *ngIf="loading" class="loading-container">
-      <div class="spinner"></div>
-      <p>Carregando tanques...</p>
-    </div>
-  
-    <div *ngIf="error" class="error-container">
-      <p>{{ error }}</p>
-      <button class="btn-secondary" (click)="carregarTanques()">Tentar novamente</button>
-    </div>
-  
-    <div *ngIf="!loading && !error">
-      <div *ngIf="tanques.length === 0" class="empty-state">
-        <p>Nenhum tanque cadastrado</p>
-        <button class="btn-primary" (click)="criarTanque()">Cadastrar primeiro tanque</button>
-      </div>
-  
-      <div *ngIf="tanques.length > 0" class="table-container">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Espécie</th>
-              <th>Capacidade (m³)</th>
-              <th>Localização</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let tanque of tanques">
-              <td>{{ tanque.nome }}</td>
-              <td>{{ tanque.especieCultura }}</td>
-              <td>{{ tanque.capacidade }}</td>
-              <td>{{ tanque.localizacao }}</td>
-              <td class="actions">
-                <button class="btn-icon" (click)="visualizarTanque(tanque.id)">
-                  <span class="material-icons">visibility</span>
-                </button>
-                <button class="btn-icon" (click)="editarTanque(tanque.id)">
-                  <span class="material-icons">edit</span>
-                </button>
-                <button class="btn-icon btn-danger" (click)="deletarTanque(tanque.id)">
-                  <span class="material-icons">delete</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
+    <div *ngIf="tanques.length > 0" class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Espécie</th>
+            <th>Capacidade (m³)</th>
+            <th>Localização</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tanque of tanques">
+            <td>{{ tanque.nome }}</td>
+            <td>{{ tanque.especieCultura }}</td>
+            <td>{{ tanque.capacidade }}</td>
+            <td>{{ tanque.localizacao }}</td>
+            <td class="actions">
+              <button class="btn-icon" (click)="visualizarTanque(tanque.id!)">
+                <span class="material-icons">visibility</span>
+              </button>
+              <button class="btn-icon" (click)="editarTanque(tanque.id!)">
+                <span class="material-icons">edit</span>
+              </button>
+              <button class="btn-icon btn-danger" (click)="deletarTanque(tanque.id!)">
+                <span class="material-icons">delete</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>

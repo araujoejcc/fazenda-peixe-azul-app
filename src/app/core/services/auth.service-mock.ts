@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 import { LoginRequest, LoginResponse } from '../models/auth.model';
 import { Router } from '@angular/router';
 
-/**
- * Este serviço simula a autenticação para testes locais.
- * Em um ambiente de produção, você usaria o auth.service.ts que 
- * se conecta ao backend real.
- */
 @Injectable({
   providedIn: 'root'
 })
@@ -34,9 +29,13 @@ export class AuthServiceMock {
     }
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    console.log('AuthServiceMock initialized');
+  }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
+    console.log('Login attempt with:', credentials);
+    
     // Simular validação de credenciais
     if (credentials.email === this.mockCredentials.email && 
         credentials.senha === this.mockCredentials.senha) {
@@ -44,11 +43,11 @@ export class AuthServiceMock {
       // Simular delay da rede (500ms)
       return of(this.mockUserResponse).pipe(
         delay(500),
-        // tap para armazenar no localStorage como no serviço real
         tap(response => {
           localStorage.setItem(this.tokenKey, response.token);
           localStorage.setItem(this.userKey, JSON.stringify(response.usuario));
           this.isLoggedInSubject.next(true);
+          console.log('Login successful');
         })
       );
     }
@@ -69,13 +68,13 @@ export class AuthServiceMock {
   }
 
   isLoggedIn(): Observable<boolean> {
+    console.log('isLoggedIn called, current value:', this.isLoggedInSubject.value);
     return this.isLoggedInSubject.asObservable();
   }
 
   private hasToken(): boolean {
-    return !!this.getToken();
+    const hasToken = !!this.getToken();
+    console.log('hasToken check result:', hasToken);
+    return hasToken;
   }
 }
-
-// Adicione este import faltante
-import { tap } from 'rxjs/operators';

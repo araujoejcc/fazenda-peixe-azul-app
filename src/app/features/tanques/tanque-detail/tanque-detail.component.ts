@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Tanque } from '../../../core/models/tanque.model';
 import { CicloProducao } from '../../../core/models/ciclo-producao.model';
 import { RegistroQualidadeAgua } from '../../../core/models/registro-qualidade-agua.model';
@@ -105,6 +105,3 @@ export class TanqueDetailComponent implements OnInit {
     this.router.navigate(['/qualidade-agua/novo'], { queryParams: { tanqueId: this.tanqueId } });
   }
 }
-
-// Import faltante
-import { map } from 'rxjs/operators';
