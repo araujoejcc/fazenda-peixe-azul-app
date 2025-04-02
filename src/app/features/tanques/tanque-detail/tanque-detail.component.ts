@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Tanque } from '../../../core/models/tanque.model';
 import { CicloProducao } from '../../../core/models/ciclo-producao.model';
 import { RegistroQualidadeAgua } from '../../../core/models/registro-qualidade-agua.model';
@@ -31,34 +31,60 @@ export class TanqueDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.tanqueId = this.route.snapshot.params['id'];
-    this.carregarDados();
+    this.route.params.pipe(
+      tap(params => {
+        this.tanqueId = +params['id'];
+        this.carregarDados();
+      })
+    ).subscribe();
   }
 
   carregarDados(): void {
     this.loading = true;
     this.error = '';
 
-    // Exemplo de como poderia ser feito com mais requisições paralelas
-    // Na prática, você precisaria criar endpoints específicos no backend para isso
-    forkJoin({
-      tanque: this.tanqueService.getTanqueById(this.tanqueId),
-      ciclos: of([]), // Aqui deveria ser uma chamada para buscar ciclos por tanque
-      registros: of([]) // Aqui deveria ser uma chamada para buscar registros por tanque
-    }).pipe(
+    this.tanqueService.getTanqueById(this.tanqueId).pipe(
+      tap(tanque => {
+        this.tanque = tanque;
+      }),
+      switchMap(tanque => {
+        // Aqui estamos simulando a busca dos ciclos e registros para o tanque específico
+        // Em uma implementação real, você usaria endpoints específicos para isso
+        return forkJoin({
+          ciclos: this.buscarCiclosPorTanque(tanque.id ?? 0),
+          registros: this.buscarRegistrosPorTanque(tanque.id ?? 0)
+        });
+      }),
       catchError(err => {
         this.error = 'Erro ao carregar informações: ' + (err.message || 'Erro desconhecido');
         this.loading = false;
-        return of({ tanque: null, ciclos: [], registros: [] });
+        return of({ ciclos: [], registros: [] });
       })
-    ).subscribe(result => {
-      if (result.tanque) {
-        this.tanque = result.tanque;
+    ).subscribe({
+      next: result => {
         this.ciclos = result.ciclos;
         this.registrosQualidade = result.registros;
+        this.loading = false;
+      },
+      error: err => {
+        this.error = 'Erro ao carregar informações: ' + (err.message || 'Erro desconhecido');
+        this.loading = false;
       }
-      this.loading = false;
     });
+  }
+
+  // Estes métodos simulam chamadas para endpoints específicos
+  // Em uma implementação real, você teria estes endpoints no backend
+  private buscarCiclosPorTanque(tanqueId: number) {
+    return this.cicloService.getCiclos().pipe(
+      map(ciclos => ciclos.filter(c => c.tanque.id === tanqueId))
+    );
+  }
+
+  private buscarRegistrosPorTanque(tanqueId: number) {
+    return this.qualidadeAguaService.getRegistros().pipe(
+      map(registros => registros.filter(r => r.tanque.id === tanqueId))
+    );
   }
 
   editarTanque(): void {
@@ -79,3 +105,6 @@ export class TanqueDetailComponent implements OnInit {
     this.router.navigate(['/qualidade-agua/novo'], { queryParams: { tanqueId: this.tanqueId } });
   }
 }
+
+// Import faltante
+import { map } from 'rxjs/operators';

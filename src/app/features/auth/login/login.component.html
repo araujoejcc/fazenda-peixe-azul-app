@@ -1,44 +1,59 @@
 <div class="login-container">
-    <div class="login-card">
+  <div class="login-card">
+    <div class="login-header">
       <h2>Sistema de Gestão para Carinicultura</h2>
       <h3>Login</h3>
-      
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            formControlName="email"
-            class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
-          />
-          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-            <div *ngIf="f['email'].errors['required']">Email é obrigatório</div>
-            <div *ngIf="f['email'].errors['email']">Email inválido</div>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="password">Senha</label>
-          <input
-            type="password"
-            formControlName="senha"
-            class="form-control"
-            [ngClass]="{ 'is-invalid': submitted && f['senha'].errors }"
-          />
-          <div *ngIf="submitted && f['senha'].errors" class="invalid-feedback">
-            <div *ngIf="f['senha'].errors['required']">Senha é obrigatória</div>
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <button [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Login
-          </button>
-        </div>
-        
-        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-      </form>
     </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          placeholder="Digite seu email"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email é obrigatório</div>
+          <div *ngIf="f['email'].errors['email']">Email inválido</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input
+          type="password"
+          id="senha"
+          formControlName="senha"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['senha'].errors }"
+          placeholder="Digite sua senha"
+        />
+        <div *ngIf="submitted && f['senha'].errors" class="invalid-feedback">
+          <div *ngIf="f['senha'].errors['required']">Senha é obrigatória</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <button [disabled]="loading" class="btn-primary btn-block">
+          <span *ngIf="loading" class="spinner spinner-sm mr-1"></span>
+          <span>Entrar</span>
+        </button>
+      </div>
+      
+      <div *ngIf="error" class="alert-danger mt-3">
+        <p>{{error}}</p>
+      </div>
+
+      <!-- Credenciais de teste -->
+      <div class="test-credentials mt-4">
+        <p><strong>Credenciais para teste:</strong></p>
+        <p>Email: admin@exemplo.com</p>
+        <p>Senha: admin123</p>
+      </div>
+    </form>
   </div>
+</div>
