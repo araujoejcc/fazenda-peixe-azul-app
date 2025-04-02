@@ -2,30 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../../core/guards/auth.guard';
-
-// Placeholder para futuras implementações
-const routes: Routes = [
-  { 
-    path: '', 
-    component: FinanceiroPlaceholderComponent, 
-    canActivate: [AuthGuard] 
-  }
-];
-
-@NgModule({
-  declarations: [
-    FinanceiroPlaceholderComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ]
-})
-export class FinanceiroModule { }
+import { Router } from '@angular/router';
 
 // Componente placeholder simples apenas para o roteamento funcionar
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-financeiro-placeholder',
@@ -47,3 +27,23 @@ export class FinanceiroPlaceholderComponent {
     this.router.navigate(['/dashboard']);
   }
 }
+
+// Rotas definidas após a declaração do componente
+const routes: Routes = [
+  { 
+    path: '', 
+    component: FinanceiroPlaceholderComponent, 
+    canActivate: [AuthGuard] 
+  }
+];
+
+@NgModule({
+  declarations: [
+    FinanceiroPlaceholderComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes)
+  ]
+})
+export class FinanceiroModule { }

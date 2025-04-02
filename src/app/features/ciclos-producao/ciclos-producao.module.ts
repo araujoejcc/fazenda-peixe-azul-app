@@ -2,31 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../../core/guards/auth.guard';
-
-// Placeholder para futuras implementações
-const routes: Routes = [
-  { 
-    path: '', 
-    component: CiclosPlaceholderComponent, 
-    canActivate: [AuthGuard] 
-  },
-  { 
-    path: 'novo', 
-    component: CiclosPlaceholderComponent, 
-    canActivate: [AuthGuard] 
-  }
-];
-
-@NgModule({
-  declarations: [
-    CiclosPlaceholderComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ]
-})
-export class CiclosProducaoModule { }
+import { Router } from '@angular/router';
 
 // Componente placeholder simples apenas para o roteamento funcionar
 import { Component } from '@angular/core';
@@ -52,4 +28,27 @@ export class CiclosPlaceholderComponent {
   }
 }
 
-import { Router } from '@angular/router';
+// Rotas definidas após a declaração do componente
+const routes: Routes = [
+  { 
+    path: '', 
+    component: CiclosPlaceholderComponent, 
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'novo', 
+    component: CiclosPlaceholderComponent, 
+    canActivate: [AuthGuard] 
+  }
+];
+
+@NgModule({
+  declarations: [
+    CiclosPlaceholderComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes)
+  ]
+})
+export class CiclosProducaoModule { }
