@@ -1,87 +1,68 @@
-.header-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
+// src/app/features/qualidade-agua/qualidade-agua-list/qualidade-agua-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { RegistroQualidadeAgua } from '../../../core/models/registro-qualidade-agua.model';
+import { QualidadeAguaService } from '../../../core/services/qualidade-agua.service';
 
-.table-container {
-  overflow-x: auto;
-  margin-bottom: 1.5rem;
-}
+@Component({
+  selector: 'app-qualidade-agua-list',
+  templateUrl: './qualidade-agua-list.component.html',
+  styleUrls: ['./qualidade-agua-list.component.scss']
+})
+export class QualidadeAguaListComponent implements OnInit {
+  registros: RegistroQualidadeAgua[] = [];
+  loading = false;
+  error = '';
 
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+  constructor(
+    private qualidadeAguaService: QualidadeAguaService,
+    private router: Router
+  ) {}
 
-.data-table th,
-.data-table td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.data-table th {
-  font-weight: 500;
-  color: #333;
-  background-color: #f5f5f5;
-}
-
-.data-table tr:hover {
-  background-color: #f9f9f9;
-}
-
-.data-table .actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-.btn-icon {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-icon:hover {
-  background-color: #f1f1f1;
-  border-radius: 50%;
-}
-
-.btn-danger:hover {
-  background-color: rgba(220, 53, 69, 0.1);
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.empty-state p {
-  margin-bottom: 1rem;
-  color: #666;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .header-actions {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+  ngOnInit(): void {
+    this.carregarRegistros();
   }
-  
-  .header-actions button {
-    width: 100%;
+
+  carregarRegistros(): void {
+    this.loading = true;
+    this.error = '';
+    
+    this.qualidadeAguaService.getRegistros()
+      .subscribe({
+        next: (data) => {
+          this.registros = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Erro ao carregar registros: ' + (err.message || 'Erro desconhecido');
+          this.loading = false;
+        }
+      });
+  }
+
+  criarRegistro(): void {
+    this.router.navigate(['/qualidade-agua/novo']);
+  }
+
+  visualizarRegistro(id: number): void {
+    this.router.navigate(['/qualidade-agua', id]);
+  }
+
+  editarRegistro(id: number): void {
+    this.router.navigate(['/qualidade-agua/editar', id]);
+  }
+
+  deletarRegistro(id: number): void {
+    if (confirm('Tem certeza que deseja excluir este registro?')) {
+      this.qualidadeAguaService.deleteRegistro(id)
+        .subscribe({
+          next: () => {
+            this.carregarRegistros();
+          },
+          error: (err) => {
+            this.error = 'Erro ao excluir registro: ' + (err.message || 'Erro desconhecido');
+          }
+        });
+    }
   }
 }
