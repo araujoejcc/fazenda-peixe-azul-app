@@ -14,8 +14,8 @@ export class AuthServiceMock {
 
   // Credenciais mockadas para teste
   private mockCredentials = {
-    email: 'admin@exemplo.com',
-    senha: 'admin123'
+    email: 'usuario',
+    senha: 'senha123'
   };
 
   private mockUserResponse: LoginResponse = {
@@ -24,7 +24,7 @@ export class AuthServiceMock {
     usuario: {
       id: 1,
       nome: 'Administrador',
-      email: 'admin@exemplo.com',
+      email: 'usuario',
       perfis: ['ADMIN']
     }
   };
