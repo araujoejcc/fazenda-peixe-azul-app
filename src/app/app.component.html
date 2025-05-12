@@ -1,10 +1,4 @@
 <div class="app-container">
-  <app-header></app-header>
-  <div class="main-content">
-    <app-sidebar *ngIf="(isLoggedIn$ | async) === true"></app-sidebar>
-    <div class="content-wrapper" [class.sidebar-collapsed]="sidebarCollapsed" [class.with-sidebar]="(isLoggedIn$ | async) === true">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-  <app-footer></app-footer>
+  <h1>Fazenda Peixe Azul</h1>
+  <router-outlet></router-outlet>
 </div>

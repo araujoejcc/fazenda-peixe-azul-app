@@ -30,9 +30,20 @@ export class AuthServiceMock {
   };
 
   constructor(private router: Router) {
-    // Verifica se já existe um token no localStorage ao iniciar o serviço
-    const hasToken = this.hasToken();
-    this.isLoggedInSubject.next(hasToken);
+    // Verifica se há um token no localStorage e atualiza o estado inicial
+    this.checkInitialAuthState();
+  }
+
+  // Método para verificar o estado de autenticação inicial
+  private checkInitialAuthState(): void {
+    const token = this.getToken();
+    if (token) {
+      this.isLoggedInSubject.next(true);
+    } else {
+      this.isLoggedInSubject.next(false);
+      // Limpa qualquer dado de sessão antigo
+      this.clearAuthData();
+    }
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
@@ -44,13 +55,8 @@ export class AuthServiceMock {
       return of(this.mockUserResponse).pipe(
         delay(500),
         tap(response => {
-          // Limpar quaisquer dados antigos
-          localStorage.removeItem(this.tokenKey);
-          localStorage.removeItem(this.userKey);
-          
-          // Armazenar novos dados
-          localStorage.setItem(this.tokenKey, response.token);
-          localStorage.setItem(this.userKey, JSON.stringify(response.usuario));
+          // Armazenar dados
+          this.setAuthData(response);
           
           // Atualizar estado de login
           this.isLoggedInSubject.next(true);
@@ -63,9 +69,13 @@ export class AuthServiceMock {
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.userKey);
+    // Limpar dados de autenticação
+    this.clearAuthData();
+    
+    // Atualizar estado de login
     this.isLoggedInSubject.next(false);
+    
+    // Redirecionar para a página de login
     this.router.navigate(['/auth/login']);
   }
 
@@ -77,8 +87,27 @@ export class AuthServiceMock {
     return this.isLoggedInSubject.asObservable();
   }
 
+  // Método para verificar se há um token válido
   private hasToken(): boolean {
     const token = this.getToken();
     return !!token;
+  }
+
+  // Armazena os dados de autenticação no localStorage
+  private setAuthData(response: LoginResponse): void {
+    localStorage.setItem(this.tokenKey, response.token);
+    localStorage.setItem(this.userKey, JSON.stringify(response.usuario));
+  }
+
+  // Limpa os dados de autenticação do localStorage
+  private clearAuthData(): void {
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userKey);
+  }
+
+  // Obtém informações do usuário
+  getUserInfo(): any {
+    const userInfo = localStorage.getItem(this.userKey);
+    return userInfo ? JSON.parse(userInfo) : null;
   }
 }
