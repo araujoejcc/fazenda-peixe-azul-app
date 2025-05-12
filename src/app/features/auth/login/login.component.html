@@ -1,24 +1,23 @@
 <div class="login-container">
   <div class="login-card">
     <div class="login-header">
-      <h2>Fazenda Peixe Azul</h2>
+      <h2>Sistema de Gestão para Carcinicultura</h2>
       <h3>Login</h3>
     </div>
     
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">Usuário</label>
         <input
-          type="email"
+          type="text"
           id="email"
           formControlName="email"
           class="form-control"
           [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
-          placeholder="Digite seu email"
+          placeholder="Digite seu usuário"
         />
         <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-          <div *ngIf="f['email'].errors['required']">Email é obrigatório</div>
-          <div *ngIf="f['email'].errors['email']">Email inválido</div>
+          <div *ngIf="f['email'].errors['required']">Usuário é obrigatório</div>
         </div>
       </div>
       
@@ -51,7 +50,7 @@
       <!-- Credenciais de teste -->
       <div class="test-credentials mt-4">
         <p><strong>Credenciais para teste:</strong></p>
-        <p>Email: admin@exemplo.com</p>
+        <p>Usuário: admin</p>
         <p>Senha: admin123</p>
       </div>
     </form>

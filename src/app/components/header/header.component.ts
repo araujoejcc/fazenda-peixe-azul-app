@@ -16,7 +16,9 @@ export class HeaderComponent {
   ) {}
 
   onLogout(): void {
+    // Chamada simples ao método logout do serviço
     this.authService.logout();
+    // A navegação para página de login agora é feita diretamente no serviço
   }
 
   toggleSidebar(): void {

@@ -45,7 +45,7 @@
       </div>
       
       <!-- Card de parâmetros de qualidade da água -->
-      <div class="card">
+      <div class="card full-width">
         <h2>Últimos Registros de Qualidade da Água</h2>
         <div *ngIf="ultimosRegistros.length === 0" class="empty-state">
           <p>Nenhum registro disponível</p>
@@ -73,7 +73,7 @@
       </div>
       
       <!-- Card com gráfico de parâmetros -->
-      <div class="card chart-card">
+      <div class="card full-width">
         <h2>Evolução dos Parâmetros</h2>
         <div *ngIf="qualidadeAguaChartData.length === 0" class="empty-state">
           <p>Dados insuficientes para gerar o gráfico</p>

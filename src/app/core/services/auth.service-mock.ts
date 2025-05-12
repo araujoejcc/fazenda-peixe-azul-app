@@ -29,9 +29,13 @@ export class AuthServiceMock {
     }
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    console.log('AuthServiceMock initialized');
+  }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
+    console.log('Login attempt with:', credentials);
+    
     // Simular validação de credenciais
     if (credentials.email === this.mockCredentials.email && 
         credentials.senha === this.mockCredentials.senha) {
@@ -50,6 +54,7 @@ export class AuthServiceMock {
           
           // Atualizar estado de login
           this.isLoggedInSubject.next(true);
+          console.log('Login successful, token stored:', response.token);
         })
       );
     }
@@ -59,21 +64,30 @@ export class AuthServiceMock {
   }
 
   logout(): void {
+    console.log('Logout called');
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
     this.isLoggedInSubject.next(false);
+    // Adicionar navegação para a página de login
     this.router.navigate(['/auth/login']);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    const token = localStorage.getItem(this.tokenKey);
+    console.log('getToken called, token:', token);
+    return token;
   }
 
   isLoggedIn(): Observable<boolean> {
+    const loggedIn = this.hasToken();
+    console.log('isLoggedIn called, current value:', loggedIn);
     return this.isLoggedInSubject.asObservable();
   }
 
   private hasToken(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    const hasToken = !!token;
+    console.log('hasToken check result:', hasToken);
+    return hasToken;
   }
 }

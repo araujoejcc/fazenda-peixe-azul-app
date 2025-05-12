@@ -1,151 +1,163 @@
 .dashboard-container {
-  padding: 1rem;
-}
-
-h1 {
-  margin-bottom: 1.5rem;
-  color: #3f51b5;
-}
-
-.loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-left-color: #3f51b5;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-
-.error-message button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-}
-
-.card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-}
-
-.overview-card {
-  grid-column: span 2;
-}
-
-.stats-container {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 1rem;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #3f51b5;
-}
-
-.stat-label {
-  font-size: 1rem;
-  color: #666;
-  margin-top: 0.5rem;
-}
-
-.empty-state {
-  padding: 2rem;
-  text-align: center;
-  color: #666;
-}
-
-.tanques-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tanque-item {
-  padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.tanque-item:last-child {
-  border-bottom: none;
-}
-
-.tanque-nome {
-  font-weight: 500;
-}
-
-.tanque-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.registros-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.registros-table th,
-.registros-table td {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.registros-table th {
-  font-weight: 500;
-  color: #333;
-}
-
-.chart-card {
-  grid-column: span 2;
-}
-
-.chart-container {
-  height: 300px;
-  margin-top: 1rem;
-}
+    padding: 1rem;
+  }
+  
+  h1 {
+    margin-bottom: 1.5rem;
+    color: #3f51b5;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-left-color: #3f51b5;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .overview-card {
+    grid-column: span 2;
+  }
+  
+  .full-width {
+    grid-column: span 2;
+  }
+  
+  .stats-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #3f51b5;
+  }
+  
+  .stat-label {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+  
+  .empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+  }
+  
+  .tanques-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .tanque-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .tanque-item:last-child {
+    border-bottom: none;
+  }
+  
+  .tanque-nome {
+    font-weight: 500;
+  }
+  
+  .tanque-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .registros-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .registros-table th,
+  .registros-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .registros-table th {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .chart-container {
+    height: 300px;
+    margin-top: 1rem;
+  }
+  
+  /* Responsividade para telas menores */
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .overview-card, 
+    .full-width {
+      grid-column: 1;
+    }
+  }
