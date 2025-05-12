@@ -1,3 +1,5 @@
+// src/app/features/ciclos-producao/ciclo-list/ciclo-list.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CicloProducao } from '../../../core/models/ciclo-producao.model';
@@ -11,10 +13,10 @@ import { CicloProducaoService } from '../../../core/services/ciclo-producao.serv
 export class CicloListComponent implements OnInit {
   ciclos: CicloProducao[] = [];
   ciclosAtivos: CicloProducao[] = [];
-  ciclosFinalizados: CicloProducao[] = [];
+  ciclosEncerrados: CicloProducao[] = [];
   loading = false;
   error = '';
-
+  
   constructor(
     private cicloService: CicloProducaoService,
     private router: Router
@@ -30,13 +32,9 @@ export class CicloListComponent implements OnInit {
     
     this.cicloService.getCiclos()
       .subscribe({
-        next: (data) => {
-          this.ciclos = data;
-          
-          // Separar ciclos ativos e finalizados
-          this.ciclosAtivos = this.ciclos.filter(ciclo => !ciclo.dataFim);
-          this.ciclosFinalizados = this.ciclos.filter(ciclo => ciclo.dataFim);
-          
+        next: (ciclos) => {
+          this.ciclos = ciclos;
+          this.filtrarCiclos();
           this.loading = false;
         },
         error: (err) => {
@@ -46,20 +44,25 @@ export class CicloListComponent implements OnInit {
       });
   }
 
-  criarCiclo(): void {
-    this.router.navigate(['/ciclos-producao/novo']);
+  filtrarCiclos(): void {
+    this.ciclosAtivos = this.ciclos.filter(ciclo => !ciclo.dataFim);
+    this.ciclosEncerrados = this.ciclos.filter(ciclo => ciclo.dataFim);
   }
 
-  editarCiclo(id: number): void {
-    this.router.navigate(['/ciclos-producao/editar', id]);
+  novoCiclo(): void {
+    this.router.navigate(['/ciclos-producao/novo']);
   }
 
   visualizarCiclo(id: number): void {
     this.router.navigate(['/ciclos-producao', id]);
   }
 
-  deletarCiclo(id: number): void {
-    if (confirm('Tem certeza que deseja excluir este ciclo de produção?')) {
+  editarCiclo(id: number): void {
+    this.router.navigate(['/ciclos-producao/editar', id]);
+  }
+
+  excluirCiclo(id: number): void {
+    if (confirm('Tem certeza que deseja excluir este ciclo?')) {
       this.cicloService.deleteCiclo(id)
         .subscribe({
           next: () => {
@@ -73,6 +76,9 @@ export class CicloListComponent implements OnInit {
   }
 
   calcularFCA(ciclo: CicloProducao): number {
-    return ciclo.quantidadePescado > 0 ? ciclo.racaoGasta / ciclo.quantidadePescado : 0;
+    if (ciclo.quantidadePescado > 0) {
+      return ciclo.racaoGasta / ciclo.quantidadePescado;
+    }
+    return 0;
   }
 }

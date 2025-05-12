@@ -1,13 +1,13 @@
+// src/app/features/ciclos-producao/ciclos-producao.module.ts
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthGuard } from '../../core/guards/auth.guard';
-
-// Componentes
 import { CicloListComponent } from './ciclo-list/ciclo-list.component';
 import { CicloFormComponent } from './ciclo-form/ciclo-form.component';
 import { CicloDetailComponent } from './ciclo-detail/ciclo-detail.component';
+import { AuthGuard } from '../../core/guards/auth.guard';
 
 const routes: Routes = [
   { 

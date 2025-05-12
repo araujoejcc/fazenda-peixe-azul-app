@@ -1,3 +1,5 @@
+// src/app/features/ciclos-producao/ciclo-detail/ciclo-detail.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CicloProducao } from '../../../core/models/ciclo-producao.model';
@@ -15,26 +17,25 @@ export class CicloDetailComponent implements OnInit {
   error = '';
 
   constructor(
-    private cicloService: CicloProducaoService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cicloService: CicloProducaoService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.cicloId = +params['id'];
+    const idParam = this.route.snapshot.params['id'];
+    if (idParam) {
+      this.cicloId = +idParam;
       this.carregarCiclo();
-    });
+    }
   }
 
   carregarCiclo(): void {
     this.loading = true;
-    this.error = '';
-    
     this.cicloService.getCicloById(this.cicloId)
       .subscribe({
-        next: (data) => {
-          this.ciclo = data;
+        next: (ciclo) => {
+          this.ciclo = ciclo;
           this.loading = false;
         },
         error: (err) => {
@@ -42,22 +43,6 @@ export class CicloDetailComponent implements OnInit {
           this.loading = false;
         }
       });
-  }
-
-  calcularFCA(): number {
-    if (!this.ciclo || this.ciclo.quantidadePescado <= 0) return 0;
-    return this.ciclo.racaoGasta / this.ciclo.quantidadePescado;
-  }
-
-  calcularDuracao(): number {
-    if (!this.ciclo) return 0;
-    
-    const dataInicio = new Date(this.ciclo.dataInicio);
-    const dataFim = this.ciclo.dataFim ? new Date(this.ciclo.dataFim) : new Date();
-    
-    // Calcula a diferença em milissegundos e converte para dias
-    const diffTime = Math.abs(dataFim.getTime() - dataInicio.getTime());
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
   editarCiclo(): void {
@@ -68,23 +53,33 @@ export class CicloDetailComponent implements OnInit {
     this.router.navigate(['/ciclos-producao']);
   }
 
-  finalizarCiclo(): void {
+  calcularFCA(): number {
+    if (this.ciclo && this.ciclo.quantidadePescado > 0) {
+      return this.ciclo.racaoGasta / this.ciclo.quantidadePescado;
+    }
+    return 0;
+  }
+
+  encerrarCiclo(): void {
     if (!this.ciclo) return;
     
-    // Cria uma cópia do ciclo para atualização
-    const cicloAtualizado: CicloProducao = {
-      ...this.ciclo,
-      dataFim: new Date().toISOString().split('T')[0] // Data atual no formato ISO
-    };
+    const hoje = new Date().toISOString().split('T')[0];
+    if (this.ciclo.dataFim) {
+      alert('Este ciclo já está encerrado.');
+      return;
+    }
     
-    this.cicloService.updateCiclo(this.cicloId, cicloAtualizado)
-      .subscribe({
-        next: (data) => {
-          this.ciclo = data;
-        },
-        error: (err) => {
-          this.error = 'Erro ao finalizar ciclo: ' + (err.message || 'Erro desconhecido');
-        }
-      });
+    if (confirm('Deseja encerrar este ciclo hoje?')) {
+      const cicloAtualizado = { ...this.ciclo, dataFim: hoje };
+      this.cicloService.updateCiclo(this.cicloId, cicloAtualizado)
+        .subscribe({
+          next: () => {
+            this.carregarCiclo();
+          },
+          error: (err) => {
+            this.error = 'Erro ao encerrar ciclo: ' + (err.message || 'Erro desconhecido');
+          }
+        });
+    }
   }
 }

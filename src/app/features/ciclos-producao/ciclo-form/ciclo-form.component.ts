@@ -1,3 +1,5 @@
+// src/app/features/ciclos-producao/ciclo-form/ciclo-form.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,13 +19,11 @@ import { TanqueService } from '../../../core/services/tanque.service';
 export class CicloFormComponent implements OnInit {
   cicloForm!: FormGroup;
   tanques: Tanque[] = [];
-  isEditMode = false;
   cicloId?: number;
+  isEditMode = false;
   loading = false;
-  loadingTanques = false;
   submitting = false;
   error = '';
-  dataMaxima = new Date().toISOString().split('T')[0]; // Data atual no formato ISO
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,63 +35,71 @@ export class CicloFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.carregarDados();
+    this.loadTanques();
     
     // Verifica se estamos em modo de edição
     const idParam = this.route.snapshot.params['id'];
     if (idParam) {
       this.cicloId = +idParam;
       this.isEditMode = true;
+      this.carregarCiclo(this.cicloId);
     }
     
-    // Verifica se há um tanqueId na query string (para pré-selecionar o tanque)
+    // Verifica se tem um tanqueId na query string
     const tanqueId = this.route.snapshot.queryParams['tanqueId'];
-    if (tanqueId) {
-      this.cicloForm.get('tanqueId')?.setValue(+tanqueId);
+    if (tanqueId && !this.isEditMode) {
+      this.cicloForm.patchValue({ tanqueId: +tanqueId });
     }
   }
 
   initForm(): void {
     this.cicloForm = this.formBuilder.group({
-      tanqueId: ['', [Validators.required]],
-      dataInicio: ['', [Validators.required]],
+      tanqueId: ['', Validators.required],
+      dataInicio: ['', Validators.required],
       dataFim: [''],
-      quantidadePescado: [0, [Validators.min(0)]],
-      racaoGasta: [0, [Validators.min(0)]]
+      quantidadePescado: [0, [Validators.required, Validators.min(0)]],
+      racaoGasta: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
-  carregarDados(): void {
+  loadTanques(): void {
     this.loading = true;
-    this.loadingTanques = true;
-    
+    this.tanqueService.getTanques()
+      .subscribe({
+        next: (tanques) => {
+          this.tanques = tanques;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Erro ao carregar tanques: ' + (err.message || 'Erro desconhecido');
+          this.loading = false;
+        }
+      });
+  }
+
+  carregarCiclo(id: number): void {
+    this.loading = true;
     forkJoin({
-      tanques: this.tanqueService.getTanques().pipe(catchError(() => of([]))),
-      ciclo: this.isEditMode && this.cicloId 
-        ? this.cicloService.getCicloById(this.cicloId).pipe(catchError(() => of(null))) 
-        : of(null)
+      ciclo: this.cicloService.getCicloById(id),
+      tanques: this.tanqueService.getTanques().pipe(catchError(() => of([])))
     }).subscribe({
       next: (result) => {
+        const ciclo = result.ciclo;
         this.tanques = result.tanques;
-        this.loadingTanques = false;
         
-        if (result.ciclo && this.isEditMode) {
-          // Preenche o formulário com os dados do ciclo
-          this.cicloForm.patchValue({
-            tanqueId: result.ciclo.tanque.id,
-            dataInicio: result.ciclo.dataInicio,
-            dataFim: result.ciclo.dataFim || '',
-            quantidadePescado: result.ciclo.quantidadePescado,
-            racaoGasta: result.ciclo.racaoGasta
-          });
-        }
+        this.cicloForm.patchValue({
+          tanqueId: ciclo.tanque.id,
+          dataInicio: ciclo.dataInicio,
+          dataFim: ciclo.dataFim || '',
+          quantidadePescado: ciclo.quantidadePescado,
+          racaoGasta: ciclo.racaoGasta
+        });
         
         this.loading = false;
       },
       error: (err) => {
-        this.error = 'Erro ao carregar dados: ' + (err.message || 'Erro desconhecido');
+        this.error = 'Erro ao carregar dados do ciclo: ' + (err.message || 'Erro desconhecido');
         this.loading = false;
-        this.loadingTanques = false;
       }
     });
   }
@@ -108,26 +116,25 @@ export class CicloFormComponent implements OnInit {
     this.submitting = true;
     const formData = this.cicloForm.value;
     
-    // Encontra o objeto tanque completo pelo ID
-    const tanque = this.tanques.find(t => t.id === +formData.tanqueId);
-    
-    if (!tanque) {
-      this.error = 'Tanque não encontrado';
+    // Encontra o tanque selecionado
+    const tanqueSelecionado = this.tanques.find(t => t.id === +formData.tanqueId);
+    if (!tanqueSelecionado) {
+      this.error = 'Tanque não encontrado.';
       this.submitting = false;
       return;
     }
     
-    // Prepara objeto ciclo
+    // Prepara o objeto ciclo
     const ciclo: CicloProducao = {
-      tanque: tanque,
+      tanque: tanqueSelecionado,
       dataInicio: formData.dataInicio,
       dataFim: formData.dataFim || undefined,
       quantidadePescado: formData.quantidadePescado,
       racaoGasta: formData.racaoGasta
     };
-
+    
     if (this.isEditMode && this.cicloId) {
-      // Modo edição
+      ciclo.id = this.cicloId;
       this.cicloService.updateCiclo(this.cicloId, ciclo)
         .subscribe({
           next: () => {
@@ -139,7 +146,6 @@ export class CicloFormComponent implements OnInit {
           }
         });
     } else {
-      // Modo criação
       this.cicloService.createCiclo(ciclo)
         .subscribe({
           next: () => {

@@ -1,3 +1,20 @@
+// src/app/features/ciclos-producao/ciclo-list/ciclo-list.component.scss
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -7,7 +24,6 @@
 
 .table-container {
   overflow-x: auto;
-  margin-bottom: 1rem;
 }
 
 .data-table {
@@ -40,6 +56,7 @@
 .btn-icon {
   background: none;
   border: none;
+  color: #3f51b5;
   cursor: pointer;
   padding: 0.25rem;
   display: flex;
@@ -48,17 +65,22 @@
 }
 
 .btn-icon:hover {
-  background-color: #f1f1f1;
+  background-color: rgba(63, 81, 181, 0.1);
   border-radius: 50%;
 }
 
+.btn-danger {
+  color: #f44336;
+}
+
 .btn-danger:hover {
-  background-color: rgba(220, 53, 69, 0.1);
+  background-color: rgba(244, 67, 54, 0.1);
 }
 
 .empty-state {
   padding: 2rem;
   text-align: center;
+  color: #666;
   background-color: #f9f9f9;
   border-radius: 4px;
 }

@@ -1,7 +1,9 @@
+<!-- src/app/features/ciclos-producao/ciclo-list/ciclo-list.component.html -->
+
 <div class="container">
   <div class="header-actions">
     <h1>Ciclos de Produção</h1>
-    <button class="btn-primary" (click)="criarCiclo()">
+    <button class="btn-primary" (click)="novoCiclo()">
       <span class="material-icons">add</span>
       Novo Ciclo
     </button>
@@ -9,7 +11,7 @@
 
   <div *ngIf="loading" class="loading-container">
     <div class="spinner"></div>
-    <p>Carregando ciclos...</p>
+    <p>Carregando ciclos de produção...</p>
   </div>
 
   <div *ngIf="error" class="error-container">
@@ -18,15 +20,14 @@
   </div>
 
   <div *ngIf="!loading && !error">
-    <!-- Ciclos Ativos -->
+    <!-- Ciclos ativos -->
     <div class="card">
       <div class="section-header">
         <h2>Ciclos Ativos</h2>
       </div>
 
       <div *ngIf="ciclosAtivos.length === 0" class="empty-state">
-        <p>Nenhum ciclo de produção ativo</p>
-        <button class="btn-primary" (click)="criarCiclo()">Iniciar novo ciclo</button>
+        <p>Nenhum ciclo ativo no momento.</p>
       </div>
 
       <div *ngIf="ciclosAtivos.length > 0" class="table-container">
@@ -34,9 +35,10 @@
           <thead>
             <tr>
               <th>Tanque</th>
-              <th>Início</th>
-              <th>Duração (dias)</th>
-              <th>Ração Gasta (kg)</th>
+              <th>Data Início</th>
+              <th>Dias em Produção</th>
+              <th>Ração Utilizada (kg)</th>
+              <th>Espécie</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -44,8 +46,9 @@
             <tr *ngFor="let ciclo of ciclosAtivos">
               <td>{{ ciclo.tanque.nome }}</td>
               <td>{{ ciclo.dataInicio }}</td>
-              <td>{{ ciclo.dataFim ? (ciclo.dataFim | date) : 'Em andamento' }}</td>
+              <td>Em andamento</td>
               <td>{{ ciclo.racaoGasta }}</td>
+              <td>{{ ciclo.tanque.especieCultura }}</td>
               <td class="actions">
                 <button class="btn-icon" (click)="visualizarCiclo(ciclo.id!)">
                   <span class="material-icons">visibility</span>
@@ -53,7 +56,7 @@
                 <button class="btn-icon" (click)="editarCiclo(ciclo.id!)">
                   <span class="material-icons">edit</span>
                 </button>
-                <button class="btn-icon btn-danger" (click)="deletarCiclo(ciclo.id!)">
+                <button class="btn-icon btn-danger" (click)="excluirCiclo(ciclo.id!)">
                   <span class="material-icons">delete</span>
                 </button>
               </td>
@@ -63,23 +66,23 @@
       </div>
     </div>
 
-    <!-- Ciclos Finalizados -->
+    <!-- Ciclos encerrados -->
     <div class="card mt-4">
       <div class="section-header">
-        <h2>Ciclos Finalizados</h2>
+        <h2>Ciclos Encerrados</h2>
       </div>
 
-      <div *ngIf="ciclosFinalizados.length === 0" class="empty-state">
-        <p>Nenhum ciclo de produção finalizado</p>
+      <div *ngIf="ciclosEncerrados.length === 0" class="empty-state">
+        <p>Nenhum ciclo encerrado encontrado.</p>
       </div>
 
-      <div *ngIf="ciclosFinalizados.length > 0" class="table-container">
+      <div *ngIf="ciclosEncerrados.length > 0" class="table-container">
         <table class="data-table">
           <thead>
             <tr>
               <th>Tanque</th>
-              <th>Início</th>
-              <th>Término</th>
+              <th>Data Início</th>
+              <th>Data Fim</th>
               <th>Produção (kg)</th>
               <th>Ração (kg)</th>
               <th>FCA</th>
@@ -87,13 +90,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let ciclo of ciclosFinalizados">
+            <tr *ngFor="let ciclo of ciclosEncerrados">
               <td>{{ ciclo.tanque.nome }}</td>
               <td>{{ ciclo.dataInicio }}</td>
               <td>{{ ciclo.dataFim }}</td>
               <td>{{ ciclo.quantidadePescado }}</td>
               <td>{{ ciclo.racaoGasta }}</td>
-              <td>{{ calcularFCA(ciclo) | number:'1.2-2' }}</td>
+              <td>{{ calcularFCA(ciclo).toFixed(2) }}</td>
               <td class="actions">
                 <button class="btn-icon" (click)="visualizarCiclo(ciclo.id!)">
                   <span class="material-icons">visibility</span>
@@ -101,7 +104,7 @@
                 <button class="btn-icon" (click)="editarCiclo(ciclo.id!)">
                   <span class="material-icons">edit</span>
                 </button>
-                <button class="btn-icon btn-danger" (click)="deletarCiclo(ciclo.id!)">
+                <button class="btn-icon btn-danger" (click)="excluirCiclo(ciclo.id!)">
                   <span class="material-icons">delete</span>
                 </button>
               </td>
