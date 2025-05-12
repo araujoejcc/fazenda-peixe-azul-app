@@ -1,10 +1,17 @@
 <header class="header">
-    <div class="logo">
-      <h1>GestãoPeixe</h1>
+  <div class="header-content">
+    <div class="header-left">
+      <button *ngIf="isLoggedIn$ | async" class="toggle-sidebar" (click)="toggleSidebar()">
+        <span class="material-icons">menu</span>
+      </button>
+      <div class="logo">
+        <h1>Fazenda Peixe Azul</h1>
+      </div>
     </div>
     <nav class="nav">
       <ng-container *ngIf="isLoggedIn$ | async">
         <button class="logout-btn" (click)="onLogout()">Sair</button>
       </ng-container>
     </nav>
-  </header>
+  </div>
+</header>

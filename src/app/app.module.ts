@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,13 +15,15 @@ import { AuthService } from './core/services/auth.service';
 import { TanqueService } from './core/services/tanque.service';
 import { CicloProducaoService } from './core/services/ciclo-producao.service';
 import { QualidadeAguaService } from './core/services/qualidade-agua.service';
-import { SidebarService } from './core/services/sidebar.service';
 
 // Serviços mock
 import { AuthServiceMock } from './core/services/auth.service-mock';
 import { TanqueServiceMock } from './core/services/tanque.service-mock';
 import { CicloProducaoServiceMock } from './core/services/ciclo-producao.service-mock';
 import { QualidadeAguaServiceMock } from './core/services/qualidade-agua.service-mock';
+
+// Variável de ambiente para determinar se deve usar mocks
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -33,12 +35,11 @@ import { QualidadeAguaServiceMock } from './core/services/qualidade-agua.service
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,
     ReactiveFormsModule,
     AppRoutingModule
   ],
   providers: [
-    SidebarService,
+    // Para desenvolvimento local, use os mocks
     { provide: AuthService, useClass: AuthServiceMock },
     { provide: TanqueService, useClass: TanqueServiceMock },
     { provide: CicloProducaoService, useClass: CicloProducaoServiceMock },

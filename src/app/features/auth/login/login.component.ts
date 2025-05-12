@@ -24,13 +24,16 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Verificar se há um returnUrl nos parâmetros de consulta
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    // Deslogar o usuário para garantir um estado limpo
+    this.authService.logout();
     
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       senha: ['', Validators.required]
     });
+
+    // get return url from route parameters or default to '/dashboard'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
   // convenience getter for easy access to form fields
@@ -45,8 +48,6 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.error = '';
-    
     this.authService.login({
       email: this.f['email'].value,
       senha: this.f['senha'].value
@@ -58,9 +59,11 @@ export class LoginComponent implements OnInit {
     )
     .subscribe({
       next: () => {
+        console.log('Login bem-sucedido, navegando para:', this.returnUrl);
         this.router.navigate([this.returnUrl]);
       },
       error: error => {
+        console.error('Erro no login:', error);
         this.error = error?.message || 'Usuário ou senha inválidos';
       }
     });

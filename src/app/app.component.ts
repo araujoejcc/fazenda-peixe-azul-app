@@ -17,12 +17,10 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private sidebarService: SidebarService
   ) {
-    // Importante inicializar o Observable isLoggedIn$ aqui
     this.isLoggedIn$ = this.authService.isLoggedIn();
   }
 
   ngOnInit(): void {
-    // Inscreve para atualizações no estado da sidebar
     this.sidebarService.sidebarState$.subscribe(state => {
       this.sidebarCollapsed = state.collapsed;
     });
