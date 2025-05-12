@@ -7,6 +7,7 @@ import { RegistroQualidadeAgua } from '../../core/models/registro-qualidade-agua
 import { CicloProducao } from '../../core/models/ciclo-producao.model';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private tanqueService: TanqueService,
     private qualidadeAguaService: QualidadeAguaService,
-    private cicloService: CicloProducaoService
+    private cicloService: CicloProducaoService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -63,5 +65,9 @@ export class DashboardComponent implements OnInit {
     // Implementação simplificada - em uma versão mais completa,
     // você processaria os dados para o formato esperado pelo componente de gráfico
     return registros;
+  }
+  
+  visualizarTanque(id: number): void {
+    this.router.navigate(['/tanques', id]);
   }
 }

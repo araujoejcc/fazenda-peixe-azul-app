@@ -1,0 +1,63 @@
+<div class="dashboard-card">
+  <div class="card-header">
+    <h3>Qualidade da Água</h3>
+    <a *ngIf="!tanqueId" routerLink="/qualidade-agua" class="view-all">Ver todos</a>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Carregando dados...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="carregarDados()">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="registros.length === 0 && !loading && !error" class="empty-state">
+    <p>Nenhum registro encontrado</p>
+    <a routerLink="/qualidade-agua/novo" class="btn-secondary">Adicionar registro</a>
+  </div>
+
+  <div *ngIf="registros.length > 0" class="registros-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Tanque</th>
+          <th>pH</th>
+          <th>O₂</th>
+          <th>Temp.</th>
+          <th>NH₃</th>
+          <th>NO₂</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let registro of registros">
+          <td>{{ registro.data | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ registro.tanque.nome }}</td>
+          <td [class]="'param ' + avaliarParametro(registro.ph, 'ph')">{{ registro.ph }}</td>
+          <td [class]="'param ' + avaliarParametro(registro.oxigenacao, 'oxigenacao')">{{ registro.oxigenacao }}</td>
+          <td [class]="'param ' + avaliarParametro(registro.temperatura, 'temperatura')">{{ registro.temperatura }}°C</td>
+          <td [class]="'param ' + avaliarParametro(registro.amonia, 'amonia')">{{ registro.amonia }}</td>
+          <td [class]="'param ' + avaliarParametro(registro.nitrito, 'nitrito')">{{ registro.nitrito }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-legend" *ngIf="registros.length > 0">
+    <div class="legend-item">
+      <span class="legend-color good"></span>
+      <span>Normal</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color warning"></span>
+      <span>Atenção</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color critical"></span>
+      <span>Crítico</span>
+    </div>
+  </div>
+</div>

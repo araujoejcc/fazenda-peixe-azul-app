@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="header-actions">
+    <button class="btn-text" (click)="voltarParaLista()">
+      <span class="material-icons">arrow_back</span>
+      Voltar para lista
+    </button>
+    <button class="btn-primary" (click)="editarRegistro()" *ngIf="registro">
+      <span class="material-icons">edit</span>
+      Editar Registro
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando informações...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="carregarRegistro()">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="registro && !loading" class="detail-content">
+    <div class="card">
+      <h2>Detalhes do Registro de Qualidade da Água</h2>
+      
+      <div class="info-section">
+        <h3>Informações Gerais</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Data:</span>
+            <span class="value">{{ registro.data | date: 'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Tanque:</span>
+            <span class="value">{{ registro.tanque.nome }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Localização:</span>
+            <span class="value">{{ registro.tanque.localizacao }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Espécie:</span>
+            <span class="value">{{ registro.tanque.especieCultura }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-section">
+        <h3>Parâmetros Medidos</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">pH:</span>
+            <span class="value">{{ registro.ph }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Oxigenação:</span>
+            <span class="value">{{ registro.oxigenacao }} mg/L</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Temperatura:</span>
+            <span class="value">{{ registro.temperatura }}°C</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Amônia:</span>
+            <span class="value">{{ registro.amonia }} mg/L</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Nitrito:</span>
+            <span class="value">{{ registro.nitrito }} mg/L</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Salinidade:</span>
+            <span class="value">{{ registro.salinidade }} ppt</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Turbidez:</span>
+            <span class="value">{{ registro.turbidez }} NTU</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-section">
+        <h3>Análise</h3>
+        <p>
+          Esta área pode incluir uma análise automática dos valores medidos, 
+          comparando-os com os valores ideais para a espécie em questão, 
+          e fornecendo recomendações para ajustes caso necessário.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -22,6 +22,9 @@ import { TanqueServiceMock } from './core/services/tanque.service-mock';
 import { CicloProducaoServiceMock } from './core/services/ciclo-producao.service-mock';
 import { QualidadeAguaServiceMock } from './core/services/qualidade-agua.service-mock';
 
+// Variável de ambiente para determinar se deve usar mocks
+import { environment } from '../environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,

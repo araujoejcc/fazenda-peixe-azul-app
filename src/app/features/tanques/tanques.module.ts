@@ -8,6 +8,7 @@ import { TanqueListComponent } from './tanques-list/tanque-list.component';
 import { TanqueFormComponent } from './tanque-form/tanque-form.component';
 import { TanqueDetailComponent } from './tanque-detail/tanque-detail.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
+import { QualidadeAguaModule } from '../qualidade-agua/qualidade-agua.module';
 
 const routes: Routes = [
   { 
@@ -41,7 +42,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    QualidadeAguaModule
   ]
 })
 export class TanquesModule { }

@@ -49,6 +49,10 @@
   .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+      "overview overview"
+      "tanques tanques"
+      "registros chart";
     gap: 1.5rem;
   }
   
@@ -60,11 +64,15 @@
   }
   
   .overview-card {
-    grid-column: span 2;
+    grid-area: overview;
   }
   
-  .full-width {
-    grid-column: span 2;
+  .tanques-card {
+    grid-area: tanques;
+  }
+  
+  .chart-card {
+    grid-area: chart;
   }
   
   .stats-container {
@@ -107,25 +115,82 @@
   .tanque-item {
     padding: 1rem;
     border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tanque-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  
+  .tanque-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .tanque-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
   
-  .tanque-item:last-child {
-    border-bottom: none;
-  }
-  
   .tanque-nome {
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #3f51b5;
   }
   
-  .tanque-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    font-size: 0.9rem;
+  .tanque-especie {
+    font-style: italic;
     color: #666;
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+  }
+  
+  .tanque-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tanque-detail {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-right: 1.5rem;
+  }
+  
+  .detail-label {
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .detail-value {
+    color: #333;
+  }
+  
+  .tanque-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  
+  .btn-text {
+    background-color: transparent;
+    color: #3f51b5;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-text:hover {
+    background-color: rgba(63, 81, 181, 0.1);
   }
   
   .registros-table {
@@ -150,14 +215,29 @@
     margin-top: 1rem;
   }
   
-  /* Responsividade para telas menores */
+  /* Responsividade */
   @media (max-width: 768px) {
     .dashboard-grid {
       grid-template-columns: 1fr;
+      grid-template-areas: 
+        "overview"
+        "tanques"
+        "registros"
+        "chart";
     }
     
-    .overview-card, 
-    .full-width {
-      grid-column: 1;
+    .tanque-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .tanque-details {
+      flex-direction: column;
+    }
+    
+    .tanque-actions {
+      margin-left: 0;
+      margin-top: 0.5rem;
     }
   }

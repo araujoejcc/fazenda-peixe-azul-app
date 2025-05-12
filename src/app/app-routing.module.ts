@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
@@ -38,6 +39,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'relatorios',
+    loadChildren: () => import('./features/relatorios/relatorios.module').then(m => m.RelatoriosModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: 'auth/login'
   }
@@ -45,6 +51,9 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ]
 })
 export class AppRoutingModule { }

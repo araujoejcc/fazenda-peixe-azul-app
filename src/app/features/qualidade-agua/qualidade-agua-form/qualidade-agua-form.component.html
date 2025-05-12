@@ -1,0 +1,106 @@
+<div class="container">
+  <h1>{{ isEditMode ? 'Editar' : 'Novo' }} Registro de Qualidade da Água</h1>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando dados...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <button *ngIf="isEditMode && registroId" class="btn-secondary" (click)="carregarDados()">Tentar novamente</button>
+  </div>
+
+  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="tanqueId">Tanque*</label>
+        <select id="tanqueId" formControlName="tanqueId" class="form-control" [class.is-invalid]="registroForm.get('tanqueId')?.invalid && registroForm.get('tanqueId')?.touched">
+          <option value="">Selecione um tanque</option>
+          <option *ngFor="let tanque of tanques" [value]="tanque.id">{{ tanque.nome }} ({{ tanque.especieCultura }})</option>
+        </select>
+        <div *ngIf="registroForm.get('tanqueId')?.invalid && registroForm.get('tanqueId')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('tanqueId')?.errors?.['required']">Tanque é obrigatório.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="data">Data*</label>
+        <input type="date" id="data" formControlName="data" class="form-control" [class.is-invalid]="registroForm.get('data')?.invalid && registroForm.get('data')?.touched">
+        <div *ngIf="registroForm.get('data')?.invalid && registroForm.get('data')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('data')?.errors?.['required']">Data é obrigatória.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ph">pH*</label>
+        <input type="number" id="ph" formControlName="ph" class="form-control" step="0.1" min="0" max="14" [class.is-invalid]="registroForm.get('ph')?.invalid && registroForm.get('ph')?.touched">
+        <div *ngIf="registroForm.get('ph')?.invalid && registroForm.get('ph')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('ph')?.errors?.['required']">pH é obrigatório.</span>
+          <span *ngIf="registroForm.get('ph')?.errors?.['min']">pH deve ser maior ou igual a 0.</span>
+          <span *ngIf="registroForm.get('ph')?.errors?.['max']">pH deve ser menor ou igual a 14.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="oxigenacao">Oxigenação (mg/L)*</label>
+        <input type="number" id="oxigenacao" formControlName="oxigenacao" class="form-control" step="0.1" min="0" [class.is-invalid]="registroForm.get('oxigenacao')?.invalid && registroForm.get('oxigenacao')?.touched">
+        <div *ngIf="registroForm.get('oxigenacao')?.invalid && registroForm.get('oxigenacao')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('oxigenacao')?.errors?.['required']">Oxigenação é obrigatória.</span>
+          <span *ngIf="registroForm.get('oxigenacao')?.errors?.['min']">Oxigenação deve ser maior ou igual a 0.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="temperatura">Temperatura (°C)*</label>
+        <input type="number" id="temperatura" formControlName="temperatura" class="form-control" step="0.1" min="0" [class.is-invalid]="registroForm.get('temperatura')?.invalid && registroForm.get('temperatura')?.touched">
+        <div *ngIf="registroForm.get('temperatura')?.invalid && registroForm.get('temperatura')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('temperatura')?.errors?.['required']">Temperatura é obrigatória.</span>
+          <span *ngIf="registroForm.get('temperatura')?.errors?.['min']">Temperatura deve ser maior ou igual a 0.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="amonia">Amônia (mg/L)*</label>
+        <input type="number" id="amonia" formControlName="amonia" class="form-control" step="0.01" min="0" [class.is-invalid]="registroForm.get('amonia')?.invalid && registroForm.get('amonia')?.touched">
+        <div *ngIf="registroForm.get('amonia')?.invalid && registroForm.get('amonia')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('amonia')?.errors?.['required']">Amônia é obrigatória.</span>
+          <span *ngIf="registroForm.get('amonia')?.errors?.['min']">Amônia deve ser maior ou igual a 0.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="nitrito">Nitrito (mg/L)*</label>
+        <input type="number" id="nitrito" formControlName="nitrito" class="form-control" step="0.01" min="0" [class.is-invalid]="registroForm.get('nitrito')?.invalid && registroForm.get('nitrito')?.touched">
+        <div *ngIf="registroForm.get('nitrito')?.invalid && registroForm.get('nitrito')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('nitrito')?.errors?.['required']">Nitrito é obrigatório.</span>
+          <span *ngIf="registroForm.get('nitrito')?.errors?.['min']">Nitrito deve ser maior ou igual a 0.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="salinidade">Salinidade (ppt)</label>
+        <input type="number" id="salinidade" formControlName="salinidade" class="form-control" step="0.1" min="0" [class.is-invalid]="registroForm.get('salinidade')?.invalid && registroForm.get('salinidade')?.touched">
+        <div *ngIf="registroForm.get('salinidade')?.invalid && registroForm.get('salinidade')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('salinidade')?.errors?.['min']">Salinidade deve ser maior ou igual a 0.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="turbidez">Turbidez (NTU)</label>
+        <input type="number" id="turbidez" formControlName="turbidez" class="form-control" step="0.1" min="0" [class.is-invalid]="registroForm.get('turbidez')?.invalid && registroForm.get('turbidez')?.touched">
+        <div *ngIf="registroForm.get('turbidez')?.invalid && registroForm.get('turbidez')?.touched" class="error-message">
+          <span *ngIf="registroForm.get('turbidez')?.errors?.['min']">Turbidez deve ser maior ou igual a 0.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn-primary" [disabled]="submitting">
+        <span *ngIf="submitting" class="spinner-sm"></span>
+        {{ isEditMode ? 'Atualizar' : 'Salvar' }}
+      </button>
+    </div>
+  </form>
+</div>

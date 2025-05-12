@@ -104,4 +104,12 @@ export class TanqueDetailComponent implements OnInit {
     // Navega para o formulário de novo registro com o tanque pré-selecionado
     this.router.navigate(['/qualidade-agua/novo'], { queryParams: { tanqueId: this.tanqueId } });
   }
+
+  visualizarRegistroQualidade(id: number): void {
+    this.router.navigate(['/qualidade-agua', id]);
+  }
+
+  editarRegistroQualidade(id: number): void {
+    this.router.navigate(['/qualidade-agua/editar', id]);
+  }
 }

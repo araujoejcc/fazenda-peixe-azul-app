@@ -1,54 +1,54 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from '../../core/guards/auth.guard';
-import { Router } from '@angular/router';
 
-// Componente placeholder simples apenas para o roteamento funcionar
-import { Component } from '@angular/core';
+import { QualidadeAguaListComponent } from './qualidade-agua-list/qualidade-agua-list.component';
+import { QualidadeAguaFormComponent } from './qualidade-agua-form/qualidade-agua-form.component';
+import { QualidadeAguaDetailComponent } from './qualidade-agua-detail/qualidade-agua-detail.component';
+import { QualidadeAguaDashboardComponent } from './qualidade-agua-dashboard/qualidade-agua-dashboard.component';
+import { QualidadeAguaChartComponent } from './qualidade-agua-chart/qualidade-agua-chart.component';
 
-@Component({
-  selector: 'app-qualidade-agua-placeholder',
-  template: `
-    <div class="container">
-      <h1>Monitoramento de Qualidade da Água</h1>
-      <div class="card">
-        <p>Esta funcionalidade será implementada em breve!</p>
-        <button class="btn-primary" (click)="voltar()">Voltar</button>
-      </div>
-    </div>
-  `,
-  styles: []
-})
-export class QualidadeAguaPlaceholderComponent {
-  constructor(private router: Router) {}
-  
-  voltar(): void {
-    this.router.navigate(['/dashboard']);
-  }
-}
-
-// Rotas definidas após a declaração do componente
 const routes: Routes = [
   { 
     path: '', 
-    component: QualidadeAguaPlaceholderComponent, 
+    component: QualidadeAguaListComponent, 
     canActivate: [AuthGuard] 
   },
   { 
     path: 'novo', 
-    component: QualidadeAguaPlaceholderComponent, 
+    component: QualidadeAguaFormComponent, 
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'editar/:id', 
+    component: QualidadeAguaFormComponent, 
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: ':id', 
+    component: QualidadeAguaDetailComponent, 
     canActivate: [AuthGuard] 
   }
 ];
 
 @NgModule({
   declarations: [
-    QualidadeAguaPlaceholderComponent
+    QualidadeAguaListComponent,
+    QualidadeAguaFormComponent,
+    QualidadeAguaDetailComponent,
+    QualidadeAguaDashboardComponent,
+    QualidadeAguaChartComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes)
+  ],
+  exports: [
+    QualidadeAguaDashboardComponent,
+    QualidadeAguaChartComponent
   ]
 })
 export class QualidadeAguaModule { }

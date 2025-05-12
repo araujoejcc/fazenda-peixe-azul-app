@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="header-actions">
+    <h1>Registros de Qualidade da Água</h1>
+    <button class="btn-primary" (click)="criarRegistro()">
+      <span class="material-icons">add</span>
+      Novo Registro
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando registros...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="carregarRegistros()">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div *ngIf="registros.length === 0" class="empty-state">
+      <p>Nenhum registro de qualidade da água cadastrado</p>
+      <button class="btn-primary" (click)="criarRegistro()">Cadastrar primeiro registro</button>
+    </div>
+
+    <div *ngIf="registros.length > 0" class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Tanque</th>
+            <th>pH</th>
+            <th>Oxigênio (mg/L)</th>
+            <th>Temperatura (°C)</th>
+            <th>Amônia (mg/L)</th>
+            <th>Nitrito (mg/L)</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let registro of registros">
+            <td>{{ registro.data | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ registro.tanque.nome }}</td>
+            <td>{{ registro.ph }}</td>
+            <td>{{ registro.oxigenacao }}</td>
+            <td>{{ registro.temperatura }}</td>
+            <td>{{ registro.amonia }}</td>
+            <td>{{ registro.nitrito }}</td>
+            <td class="actions">
+              <button class="btn-icon" (click)="visualizarRegistro(registro.id!)">
+                <span class="material-icons">visibility</span>
+              </button>
+              <button class="btn-icon" (click)="editarRegistro(registro.id!)">
+                <span class="material-icons">edit</span>
+              </button>
+              <button class="btn-icon btn-danger" (click)="deletarRegistro(registro.id!)">
+                <span class="material-icons">delete</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
