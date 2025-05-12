@@ -16,18 +16,15 @@
   overflow-y: auto;
   transition: margin-left 0.3s ease;
   width: 100%;
-  margin-left: 0; // Por padrão, sem margem quando não há sidebar
 }
 
-.content-wrapper.with-sidebar {
-  @media (min-width: 769px) {
-    margin-left: 250px; // Largura do sidebar expandido quando logado
+@media (min-width: 769px) {
+  .content-wrapper {
+    margin-left: 250px; // Largura do sidebar expandido
   }
-}
 
-.content-wrapper.with-sidebar.sidebar-collapsed {
-  @media (min-width: 769px) {
-    margin-left: 60px; // Largura do sidebar recolhido quando logado
+  .content-wrapper.sidebar-collapsed {
+    margin-left: 60px; // Largura do sidebar recolhido
   }
 }
 

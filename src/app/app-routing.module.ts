@@ -1,32 +1,50 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Component } from '@angular/core';
-
-// Componente simples para testar o roteamento
-@Component({
-  selector: 'app-test',
-  template: '<div style="padding: 20px;"><h2>Teste de Roteamento</h2><p>Se você está vendo esta mensagem, o roteamento está funcionando!</p></div>'
-})
-class TestComponent {} 
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    component: TestComponent
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
   },
   {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
   {
+    path: 'dashboard',
+    loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'tanques',
+    loadChildren: () => import('./features/tanques/tanques.module').then(m => m.TanquesModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'ciclos-producao',
+    loadChildren: () => import('./features/ciclos-producao/ciclos-producao.module').then(m => m.CiclosProducaoModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'qualidade-agua',
+    loadChildren: () => import('./features/qualidade-agua/qualidade-agua.module').then(m => m.QualidadeAguaModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'financeiro',
+    loadChildren: () => import('./features/financeiro/financeiro.module').then(m => m.FinanceiroModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'auth/login'
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: false })],
-  exports: [RouterModule],
-  declarations: [TestComponent]
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

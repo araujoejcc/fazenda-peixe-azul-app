@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
       },
       error: error => {
         console.error('Erro no login:', error);
-        this.error = error?.message || 'Usuário ou senha inválidos';
+        this.error = error?.error?.message || 'Usuário ou senha inválidos';
       }
     });
   }

@@ -1,44 +1,90 @@
 .sidebar {
-    width: 250px;
-    height: 100%;
-    background-color: #f5f5f5;
-    border-right: 1px solid #e0e0e0;
-    overflow-y: auto;
+  width: 250px;
+  height: 100%;
+  background-color: #f5f5f5;
+  border-right: 1px solid #e0e0e0;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  z-index: 1000;
+  position: fixed;
+  top: 60px; // Altura do header
+  left: 0;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar-header {
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  margin: 0;
+  padding: 0;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: #333;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.menu-link:hover {
+  background-color: #e0e0e0;
+}
+
+.menu-link.active {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.material-icons {
+  margin-right: 0.5rem;
+}
+
+.collapsed .material-icons {
+  margin-right: 0;
+}
+
+.menu-text {
+  font-size: 0.9rem;
+  transition: opacity 0.3s ease;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -250px; /* Esconde o sidebar fora da tela */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   }
   
-  .menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .sidebar.collapsed {
+    left: -60px; /* Esconde o sidebar fora da tela */
   }
   
-  .menu-item {
-    margin: 0;
-    padding: 0;
+  .sidebar.open {
+    left: 0; /* Mostra o sidebar */
   }
-  
-  .menu-link {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    color: #333;
-    text-decoration: none;
-    transition: background-color 0.2s;
-  }
-  
-  .menu-link:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .menu-link.active {
-    background-color: #3f51b5;
-    color: white;
-  }
-  
-  .material-icons {
-    margin-right: 0.5rem;
-  }
-  
-  .menu-text {
-    font-size: 0.9rem;
-  }
+}
