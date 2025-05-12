@@ -1,17 +1,38 @@
 .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  margin-top: 60px; // Altura do header
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+  width: 100%;
+  margin-left: 0; // Por padrão, sem margem quando não há sidebar
+}
+
+.content-wrapper.with-sidebar {
+  @media (min-width: 769px) {
+    margin-left: 250px; // Largura do sidebar expandido quando logado
   }
-  
-  .main-content {
-    display: flex;
-    flex: 1;
-    margin-top: 60px; // Altura do header
+}
+
+.content-wrapper.with-sidebar.sidebar-collapsed {
+  @media (min-width: 769px) {
+    margin-left: 60px; // Largura do sidebar recolhido quando logado
   }
-  
+}
+
+@media (max-width: 768px) {
   .content-wrapper {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
+    margin-left: 0;
   }
+}

@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppComponent } from './app.component'; // Esta linha deve importar o componente correto
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -15,6 +15,7 @@ import { AuthService } from './core/services/auth.service';
 import { TanqueService } from './core/services/tanque.service';
 import { CicloProducaoService } from './core/services/ciclo-producao.service';
 import { QualidadeAguaService } from './core/services/qualidade-agua.service';
+import { SidebarService } from './core/services/sidebar.service'; // Importando o SidebarService
 
 // Serviços mock
 import { AuthServiceMock } from './core/services/auth.service-mock';
@@ -44,7 +45,8 @@ import { environment } from '../environments/environment';
     { provide: TanqueService, useClass: TanqueServiceMock },
     { provide: CicloProducaoService, useClass: CicloProducaoServiceMock },
     { provide: QualidadeAguaService, useClass: QualidadeAguaServiceMock },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    SidebarService // Adicionando o SidebarService aos providers
   ],
   bootstrap: [AppComponent]
 })

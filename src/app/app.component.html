@@ -1,9 +1,8 @@
-<!-- src/app/app.component.html -->
 <div class="app-container">
   <app-header></app-header>
   <div class="main-content">
     <app-sidebar *ngIf="(isLoggedIn$ | async) === true"></app-sidebar>
-    <div class="content-wrapper">
+    <div class="content-wrapper" [class.sidebar-collapsed]="sidebarCollapsed" [class.with-sidebar]="(isLoggedIn$ | async) === true">
       <router-outlet></router-outlet>
     </div>
   </div>
