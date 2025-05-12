@@ -45,13 +45,43 @@
       </div>
       
       <!-- Card de parâmetros de qualidade da água -->
-      <div class="card qualidade-agua-card">
-        <app-qualidade-agua-dashboard></app-qualidade-agua-dashboard>
+      <div class="card">
+        <h2>Últimos Registros de Qualidade da Água</h2>
+        <div *ngIf="ultimosRegistros.length === 0" class="empty-state">
+          <p>Nenhum registro disponível</p>
+        </div>
+        <table *ngIf="ultimosRegistros.length > 0" class="registros-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tanque</th>
+              <th>pH</th>
+              <th>Oxigênio</th>
+              <th>Temp.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let registro of ultimosRegistros">
+              <td>{{ registro.data | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ registro.tanque.nome }}</td>
+              <td>{{ registro.ph }}</td>
+              <td>{{ registro.oxigenacao }} mg/L</td>
+              <td>{{ registro.temperatura }}°C</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       
       <!-- Card com gráfico de parâmetros -->
       <div class="card chart-card">
-        <app-qualidade-agua-chart [diasHistorico]="7"></app-qualidade-agua-chart>
+        <h2>Evolução dos Parâmetros</h2>
+        <div *ngIf="qualidadeAguaChartData.length === 0" class="empty-state">
+          <p>Dados insuficientes para gerar o gráfico</p>
+        </div>
+        <div *ngIf="qualidadeAguaChartData.length > 0" class="chart-container">
+          <!-- Aqui usaríamos uma biblioteca de gráficos como ng2-charts -->
+          <p>Gráfico de evolução dos parâmetros de qualidade da água nos últimos 7 dias</p>
+        </div>
       </div>
     </div>
   </div>

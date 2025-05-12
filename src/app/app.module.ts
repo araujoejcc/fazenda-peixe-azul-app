@@ -15,15 +15,13 @@ import { AuthService } from './core/services/auth.service';
 import { TanqueService } from './core/services/tanque.service';
 import { CicloProducaoService } from './core/services/ciclo-producao.service';
 import { QualidadeAguaService } from './core/services/qualidade-agua.service';
+import { SidebarService } from './core/services/sidebar.service';
 
 // Serviços mock
 import { AuthServiceMock } from './core/services/auth.service-mock';
 import { TanqueServiceMock } from './core/services/tanque.service-mock';
 import { CicloProducaoServiceMock } from './core/services/ciclo-producao.service-mock';
 import { QualidadeAguaServiceMock } from './core/services/qualidade-agua.service-mock';
-
-// Variável de ambiente para determinar se deve usar mocks
-import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -39,7 +37,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule
   ],
   providers: [
-    // Para desenvolvimento local, use os mocks
+    SidebarService,
     { provide: AuthService, useClass: AuthServiceMock },
     { provide: TanqueService, useClass: TanqueServiceMock },
     { provide: CicloProducaoService, useClass: CicloProducaoServiceMock },

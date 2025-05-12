@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { finalize } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.authService.logout();
     
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       senha: ['', Validators.required]
     });
 
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
       },
       error: error => {
         console.error('Erro no login:', error);
-        this.error = error?.error?.message || 'Usuário ou senha inválidos';
+        this.error = error?.message || 'Usuário ou senha inválidos';
       }
     });
   }
