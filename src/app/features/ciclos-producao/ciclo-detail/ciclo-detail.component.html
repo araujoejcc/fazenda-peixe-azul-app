@@ -1,0 +1,120 @@
+<div class="container">
+  <div class="header-actions">
+    <button class="btn-text" (click)="voltarParaLista()">
+      <span class="material-icons">arrow_back</span>
+      Voltar para lista
+    </button>
+    <div class="btn-group" *ngIf="ciclo">
+      <button class="btn-primary" (click)="editarCiclo()">
+        <span class="material-icons">edit</span>
+        Editar
+      </button>
+      <button *ngIf="!ciclo.dataFim" class="btn-secondary" (click)="finalizarCiclo()">
+        <span class="material-icons">check_circle</span>
+        Finalizar Ciclo
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando informações...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="carregarCiclo()">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="ciclo && !loading" class="detail-content">
+    <div class="card">
+      <h2>
+        Ciclo de Produção 
+        <span *ngIf="!ciclo.dataFim" class="badge active">Ativo</span>
+        <span *ngIf="ciclo.dataFim" class="badge finished">Finalizado</span>
+      </h2>
+      
+      <div class="info-section">
+        <h3>Informações Gerais</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Tanque:</span>
+            <span class="value">{{ ciclo.tanque.nome }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Espécie:</span>
+            <span class="value">{{ ciclo.tanque.especieCultura }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Capacidade:</span>
+            <span class="value">{{ ciclo.tanque.capacidade }} m³</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Localização:</span>
+            <span class="value">{{ ciclo.tanque.localizacao }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Dados do Ciclo</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Data de Início:</span>
+            <span class="value">{{ ciclo.dataInicio }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Data de Término:</span>
+            <span class="value">{{ ciclo.dataFim ? ciclo.dataFim : 'Em andamento' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Duração:</span>
+            <span class="value">{{ calcularDuracao() }} dias</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Ração Gasta:</span>
+            <span class="value">{{ ciclo.racaoGasta }} kg</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Quantidade Pescada:</span>
+            <span class="value">{{ ciclo.quantidadePescado }} kg</span>
+          </div>
+          <div class="info-item">
+            <span class="label">FCA (Fator de Conversão Alimentar):</span>
+            <span class="value">{{ calcularFCA() | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção para adicionar alimentações (implementação futura) -->
+    <div class="card mt-4">
+      <div class="section-header">
+        <h3>Registros de Alimentação</h3>
+        <button class="btn-secondary" disabled>
+          <span class="material-icons">add</span>
+          Registrar Alimentação
+        </button>
+      </div>
+
+      <div class="empty-state">
+        <p>Esta funcionalidade será implementada em breve.</p>
+      </div>
+    </div>
+
+    <!-- Seção para biometrias (implementação futura) -->
+    <div class="card mt-4">
+      <div class="section-header">
+        <h3>Biometrias</h3>
+        <button class="btn-secondary" disabled>
+          <span class="material-icons">add</span>
+          Registrar Biometria
+        </button>
+      </div>
+
+      <div class="empty-state">
+        <p>Esta funcionalidade será implementada em breve.</p>
+      </div>
+    </div>
+  </div>
+</div>

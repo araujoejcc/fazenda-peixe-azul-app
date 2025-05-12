@@ -1,53 +1,46 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from '../../core/guards/auth.guard';
-import { Router } from '@angular/router';
 
-// Componente placeholder simples apenas para o roteamento funcionar
-import { Component } from '@angular/core';
+// Componentes
+import { CicloListComponent } from './ciclo-list/ciclo-list.component';
+import { CicloFormComponent } from './ciclo-form/ciclo-form.component';
+import { CicloDetailComponent } from './ciclo-detail/ciclo-detail.component';
 
-@Component({
-  selector: 'app-ciclos-placeholder',
-  template: `
-    <div class="container">
-      <h1>Ciclos de Produção</h1>
-      <div class="card">
-        <p>Esta funcionalidade será implementada em breve!</p>
-        <button class="btn-primary" (click)="voltar()">Voltar</button>
-      </div>
-    </div>
-  `,
-  styles: []
-})
-export class CiclosPlaceholderComponent {
-  constructor(private router: Router) {}
-  
-  voltar(): void {
-    this.router.navigate(['/dashboard']);
-  }
-}
-
-// Rotas definidas após a declaração do componente
 const routes: Routes = [
   { 
     path: '', 
-    component: CiclosPlaceholderComponent, 
+    component: CicloListComponent, 
     canActivate: [AuthGuard] 
   },
   { 
     path: 'novo', 
-    component: CiclosPlaceholderComponent, 
+    component: CicloFormComponent, 
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'editar/:id', 
+    component: CicloFormComponent, 
+    canActivate: [AuthGuard] 
+  },
+  { 
+    path: ':id', 
+    component: CicloDetailComponent, 
     canActivate: [AuthGuard] 
   }
 ];
 
 @NgModule({
   declarations: [
-    CiclosPlaceholderComponent
+    CicloListComponent,
+    CicloFormComponent,
+    CicloDetailComponent
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes)
   ]
 })

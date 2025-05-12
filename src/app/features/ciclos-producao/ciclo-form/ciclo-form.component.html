@@ -1,0 +1,65 @@
+<div class="container">
+  <h1>{{ isEditMode ? 'Editar' : 'Novo' }} Ciclo de Produção</h1>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando dados...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <button *ngIf="isEditMode && cicloId" class="btn-secondary" (click)="carregarDados()">Tentar novamente</button>
+  </div>
+
+  <form [formGroup]="cicloForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <div class="form-group">
+      <label for="tanqueId">Tanque*</label>
+      <select id="tanqueId" formControlName="tanqueId" class="form-control" [disabled]="loadingTanques" [class.is-invalid]="cicloForm.get('tanqueId')?.invalid && cicloForm.get('tanqueId')?.touched">
+        <option value="">Selecione um tanque</option>
+        <option *ngFor="let tanque of tanques" [value]="tanque.id">{{ tanque.nome }} ({{ tanque.capacidade }}m³ - {{ tanque.especieCultura }})</option>
+      </select>
+      <div *ngIf="cicloForm.get('tanqueId')?.invalid && cicloForm.get('tanqueId')?.touched" class="error-message">
+        <span *ngIf="cicloForm.get('tanqueId')?.errors?.['required']">Tanque é obrigatório</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dataInicio">Data de Início*</label>
+      <input type="date" id="dataInicio" formControlName="dataInicio" class="form-control" [max]="dataMaxima" [class.is-invalid]="cicloForm.get('dataInicio')?.invalid && cicloForm.get('dataInicio')?.touched">
+      <div *ngIf="cicloForm.get('dataInicio')?.invalid && cicloForm.get('dataInicio')?.touched" class="error-message">
+        <span *ngIf="cicloForm.get('dataInicio')?.errors?.['required']">Data de início é obrigatória</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dataFim">Data de Término <small>(deixe em branco para ciclos em andamento)</small></label>
+      <input type="date" id="dataFim" formControlName="dataFim" class="form-control" [min]="cicloForm.get('dataInicio')?.value" [max]="dataMaxima">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group form-group-half">
+        <label for="quantidadePescado">Quantidade Pescada (kg)</label>
+        <input type="number" id="quantidadePescado" formControlName="quantidadePescado" class="form-control" min="0" step="0.01" [class.is-invalid]="cicloForm.get('quantidadePescado')?.invalid && cicloForm.get('quantidadePescado')?.touched">
+        <div *ngIf="cicloForm.get('quantidadePescado')?.invalid && cicloForm.get('quantidadePescado')?.touched" class="error-message">
+          <span *ngIf="cicloForm.get('quantidadePescado')?.errors?.['min']">Quantidade pescada deve ser um valor positivo ou zero</span>
+        </div>
+      </div>
+
+      <div class="form-group form-group-half">
+        <label for="racaoGasta">Ração Gasta (kg)</label>
+        <input type="number" id="racaoGasta" formControlName="racaoGasta" class="form-control" min="0" step="0.01" [class.is-invalid]="cicloForm.get('racaoGasta')?.invalid && cicloForm.get('racaoGasta')?.touched">
+        <div *ngIf="cicloForm.get('racaoGasta')?.invalid && cicloForm.get('racaoGasta')?.touched" class="error-message">
+          <span *ngIf="cicloForm.get('racaoGasta')?.errors?.['min']">Ração gasta deve ser um valor positivo ou zero</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn-primary" [disabled]="submitting">
+        <span *ngIf="submitting" class="spinner-sm"></span>
+        {{ isEditMode ? 'Atualizar' : 'Salvar' }}
+      </button>
+    </div>
+  </form>
+</div>

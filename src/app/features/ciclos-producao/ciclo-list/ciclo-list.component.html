@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="header-actions">
+    <h1>Ciclos de Produção</h1>
+    <button class="btn-primary" (click)="criarCiclo()">
+      <span class="material-icons">add</span>
+      Novo Ciclo
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando ciclos...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="carregarCiclos()">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <!-- Ciclos Ativos -->
+    <div class="card">
+      <div class="section-header">
+        <h2>Ciclos Ativos</h2>
+      </div>
+
+      <div *ngIf="ciclosAtivos.length === 0" class="empty-state">
+        <p>Nenhum ciclo de produção ativo</p>
+        <button class="btn-primary" (click)="criarCiclo()">Iniciar novo ciclo</button>
+      </div>
+
+      <div *ngIf="ciclosAtivos.length > 0" class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tanque</th>
+              <th>Início</th>
+              <th>Duração (dias)</th>
+              <th>Ração Gasta (kg)</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ciclo of ciclosAtivos">
+              <td>{{ ciclo.tanque.nome }}</td>
+              <td>{{ ciclo.dataInicio }}</td>
+              <td>{{ ciclo.dataFim ? (ciclo.dataFim | date) : 'Em andamento' }}</td>
+              <td>{{ ciclo.racaoGasta }}</td>
+              <td class="actions">
+                <button class="btn-icon" (click)="visualizarCiclo(ciclo.id!)">
+                  <span class="material-icons">visibility</span>
+                </button>
+                <button class="btn-icon" (click)="editarCiclo(ciclo.id!)">
+                  <span class="material-icons">edit</span>
+                </button>
+                <button class="btn-icon btn-danger" (click)="deletarCiclo(ciclo.id!)">
+                  <span class="material-icons">delete</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Ciclos Finalizados -->
+    <div class="card mt-4">
+      <div class="section-header">
+        <h2>Ciclos Finalizados</h2>
+      </div>
+
+      <div *ngIf="ciclosFinalizados.length === 0" class="empty-state">
+        <p>Nenhum ciclo de produção finalizado</p>
+      </div>
+
+      <div *ngIf="ciclosFinalizados.length > 0" class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tanque</th>
+              <th>Início</th>
+              <th>Término</th>
+              <th>Produção (kg)</th>
+              <th>Ração (kg)</th>
+              <th>FCA</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ciclo of ciclosFinalizados">
+              <td>{{ ciclo.tanque.nome }}</td>
+              <td>{{ ciclo.dataInicio }}</td>
+              <td>{{ ciclo.dataFim }}</td>
+              <td>{{ ciclo.quantidadePescado }}</td>
+              <td>{{ ciclo.racaoGasta }}</td>
+              <td>{{ calcularFCA(ciclo) | number:'1.2-2' }}</td>
+              <td class="actions">
+                <button class="btn-icon" (click)="visualizarCiclo(ciclo.id!)">
+                  <span class="material-icons">visibility</span>
+                </button>
+                <button class="btn-icon" (click)="editarCiclo(ciclo.id!)">
+                  <span class="material-icons">edit</span>
+                </button>
+                <button class="btn-icon btn-danger" (click)="deletarCiclo(ciclo.id!)">
+                  <span class="material-icons">delete</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
